@@ -7,59 +7,72 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #121212;
-            color: #ffffff;
             margin: 0;
+            padding: 0;
+            background-color: #202124;
+            color: #e8eaed;
+        }
+
+        .content {
             padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
         }
-        h1 {
-            font-size: 28px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 18px;
-            line-height: 1.6;
-            margin: 10px 0;
-        }
-        .certificate-info {
-            margin-top: 20px;
-            font-size: 18px;
-        }
-        .contact-info {
-            margin-top: 30px;
+
+        .content p {
             font-size: 16px;
+            line-height: 1.6;
         }
-        .contact-info strong {
-            display: block;
-            margin: 10px 0;
-        }
-        a {
-            color: #4caf50;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
+
+        .location {
+            font-size: 14px;
+            color: #9aa0a6;
+            text-align: center;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Accreditation Certificate</h1>
-    <p>
-        This is to certify that the following Institute is Accredited and its programs are recognized and approved by the <strong>IEQAB</strong> (International Education Quality Accreditation Body) (Assuring Quality in Higher Education Worldwide).
-    </p>
-    <div class="certificate-info">
+    <div class="content">
+        <p>This is to certify that the following Institute is Accredited and its programs are recognized and approved by the <strong>IEQAB</strong> 
+        (International Education Quality Accreditation Body) (Assuring Quality in Higher Education Worldwide).</p>
+
         <p><strong>Institution Name:</strong> CAREER AMEND INC</p>
-        <p><strong>Course(s)/Program(s) Name:</strong> E-Learning Quality Assurance Certification, Research, Professional Training, Diploma, Bachelor Degrees, Master Degrees, PGP and Memberships.</p>
+        <p><strong>Course(s)/Program(s) Name:</strong> E-Learning Quality Assurance Certification, Research, Professional Training, Diploma, Bachelor Degrees, Master Degrees, PGP, and Memberships.</p>
         <p><strong>Accreditation Certificate No.:</strong> 10012022018</p>
         <p><strong>Issued Accreditation on:</strong> 25TH JUNE 2024</p>
         <p><strong>Validity till:</strong> JUNE 24, 2028</p>
-    </div>
-    <div class="contact-info">
+
         <p>For verification and information, please feel free to contact the IEQAB office at:</p>
-        <strong>E-Mail:</strong> <a href="mailto:accreditation.ieqab@gmail.com">accreditation.ieqab@gmail.com</a>
-        <strong>Web:</strong> <a href="http://www.ieqab.org" target="_blank">www.ieqab.org</a>
+        <p>E-Mail: <a href="mailto:accreditation.ieqab@gmail.com">accreditation.ieqab@gmail.com</a></p>
+        <p>Web: <a href="http://www.ieqab.org" target="_blank">www.ieqab.org</a></p>
     </div>
+
+    <div class="location" id="location">Fetching your current location...</div>
+
+    <script>
+        // Fetch user's location using Geolocation API
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                // Reverse geocode using an API (example: OpenStreetMap's Nominatim)
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const location = data.address.city || data.address.town || data.address.village || "Unknown Location";
+                        document.getElementById('location').innerText = `Your current location: ${location}`;
+                    })
+                    .catch(() => {
+                        document.getElementById('location').innerText = "Unable to fetch location.";
+                    });
+            }, function (error) {
+                document.getElementById('location').innerText = "Location access denied.";
+            });
+        } else {
+            document.getElementById('location').innerText = "Geolocation not supported by your browser.";
+        }
+    </script>
 </body>
 </html>
